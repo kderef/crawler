@@ -1,48 +1,31 @@
 #[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-use macroquad::prelude::*;
+use minifb::{Key, Window, WindowOptions};
 
-fn app() -> Conf {
-    Conf {
-        window_title: "crawler".into(),
-        window_width: 800,
-        window_height: 600,
-        window_resizable: true,
+const WIDTH: usize = 640;
+const HEIGHT: usize = 360;
 
-        high_dpi: false,
-        sample_count: 4,
+fn main() {
+    let mut buffer: Vec<u32> = vec![0; WIDTH * HEIGHT];
 
-        icon: None,
+    let mut window = Window::new(
+        "Test - ESC to exit",
+        WIDTH,
+        HEIGHT,
+        WindowOptions::default(),
+    )
+    .unwrap_or_else(|e| {
+        panic!("{}", e);
+    });
 
-        ..Default::default()
-    }
-}
+    // Limit to max ~60 fps update rate
+    window.set_target_fps(60);
 
-#[macroquad::main(app)]
-async fn main() {
-    let show_fps = true;
-
-    let mut pos = vec2(0., 0.);
-
-    let camera = || Camera2D {
-        rotation: 0.0,
-        zoom: vec2(1., 1.),
-        target: pos,
-        offset: vec2(0.0, 0.0),
-
-        render_target: None,
-        viewport: None,
-    };
-
-    loop {
-        set_camera(&camera());
-
-        draw_rectangle(pos.x, pos.y, 50.0, 25.0, WHITE);
-
-        set_default_camera();
-
-        if show_fps {
-            draw_fps();
+    while window.is_open() && !window.is_key_down(Key::Escape) {
+        for i in buffer.iter_mut() {
+            *i = 0; // write something more funny here!
         }
-        next_frame().await;
+
+        // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
+        window.update_with_buffer(&buffer, WIDTH, HEIGHT).unwrap();
     }
 }
