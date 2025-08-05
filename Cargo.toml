@@ -12,6 +12,8 @@ codegen-units = 1
 package = {"*" = { opt-level = 3 }}
 
 [dependencies]
+anyhow = "1.0.98"
+bdf-parser = "0.1.0"
 minifb = "0.28.0"
 
 [build-dependencies]
