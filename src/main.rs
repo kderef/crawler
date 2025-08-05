@@ -1,57 +1,36 @@
-mod math;
 #[cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
-mod text;
+use macroquad::prelude::*;
 
-mod font;
-
-use minifb::{Key, Window, WindowOptions};
-
-const WIDTH: usize = 640;
-const HEIGHT: usize = 360;
-
-pub type Buffer = Vec<u32>;
-
-pub struct Game {
-    pub width: usize,
-    pub height: usize,
-    pub buffer: Vec<u32>,
-}
-
-impl Game {
-    pub fn new(size: (usize, usize)) -> Self {
-        Self {
-            width: size.0,
-            height: size.1,
-            buffer: Buffer::with_capacity(size.0 * size.1),
-        }
+fn app() -> Conf {
+    Conf {
+        window_title: "crawler".into(),
+        sample_count: 4,
+        ..Default::default()
     }
 }
 
-fn main() {
-    font::test();
-    return;
+#[macroquad::main(app)]
+async fn main() -> anyhow::Result<()> {
+    set_pc_assets_folder("assets");
+    let mut font = load_ttf_font("hack/bold.ttf").await?;
+    // font.set_filter(FilterMode::Nearest);
 
-    // --- setup
-    let mut window = Window::new(
-        "Test - ESC to exit",
-        WIDTH,
-        HEIGHT,
-        WindowOptions::default(),
-    )
-    .unwrap_or_else(|e| {
-        panic!("{}", e);
-    });
+    loop {
+        draw_text_ex(
+            "# . . # . . # @ @ %",
+            10.,
+            20.,
+            TextParams {
+                font: Some(&font),
+                font_size: 20,
+                font_scale: 1.,
+                font_scale_aspect: 1.,
+                rotation: 0.,
+                color: WHITE,
+            },
+        );
+        draw_text("# . 1 # 2 z 8 k @", 10., 30., 20., WHITE);
 
-    // Limit to max ~60 fps update rate
-    window.set_target_fps(60);
-
-    // --- create game
-    let mut game = Game::new((WIDTH, HEIGHT));
-
-    while window.is_open() {
-        // We unwrap here as we want this code to exit if it fails. Real applications may want to handle this in a different way
-        window
-            .update_with_buffer(&game.buffer, game.width, game.height)
-            .unwrap();
+        next_frame().await;
     }
 }
