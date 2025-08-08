@@ -4,6 +4,7 @@
 
 #define MEM_DEBUG // tracking allocations
 
+#include "assets.c"
 #include "util.c"
 #include "mem.c"
 #include "log.c"
@@ -24,6 +25,13 @@ int main(void) {
     SetTargetFPS(120);
     SetExitKey(KEY_NULL);
 
+    // -- load all stuff
+    if (!assets_load("assets")) {
+        ERROR("Failed to load assets");
+        return 1;
+    }
+    InitAudioDevice();
+
     bool run = true;
     bool draw_fps = true;
 
@@ -38,6 +46,9 @@ int main(void) {
     }
     
 
+    assets_unload();
+
+    CloseAudioDevice();
     CloseWindow();
 
     log_file_close();
