@@ -33,7 +33,7 @@ void log_file_close() {
 void tracelog_callback(int lvl, const char* fmt, va_list args) {
     // static char buf[512] = {0};
 
-    char* levels[] = {
+    static char* levels[] = {
         [LOG_ALL] = "",
         [LOG_TRACE] = "[TRACE] ",
         [LOG_DEBUG] = "[DEBUG] ",

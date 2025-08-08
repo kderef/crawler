@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include "raylib.h"
 
+#define MEM_DEBUG // tracking allocations
+
+#include "util.c"
+#include "mem.c"
 #include "log.c"
 
 int main(void) {
@@ -11,13 +15,14 @@ int main(void) {
     }
     SetTraceLogCallback(tracelog_callback);
 
-    // setup
+    // -- init raylib
+    uint flags = FLAG_MSAA_4X_HINT;
+
+    SetConfigFlags(flags);
     InitWindow(800, 600, "hello world");
 
     SetTargetFPS(120);
     SetExitKey(KEY_NULL);
-
-
 
     bool run = true;
     bool draw_fps = true;
