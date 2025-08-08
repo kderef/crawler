@@ -82,18 +82,31 @@ int main(int argc, char** argv) {
     typedef const char* cfg;
 
     cfg cc = "gcc";
-    
-    cfg flags = "-Ofast"
-        " -Ideps/raylib"
-        " -Ldeps/raylib"
-        " -lraylib"
-    ;
 
     cfg main = "src/main.c";
     cfg bin = "bin/crawler";
     
+    nob_cmd_append(&cmd, cc, main, "-o", bin);
 
-    nob_cmd_append(&cmd, cc, main, "-o", bin, flags);
+    // flags
+    nob_cmd_append(&cmd,
+        "-Ofast",
+        "-I" PATH_RAYLIB "src",
+        "-L" PATH_RAYLIB "src",
+        "-lraylib",
+    );
+
+    #if defined(__APPLE__)
+        nob_cmd_append(&cmd,
+            "-framework", "CoreVideo",
+            "-framework", "IOKit",
+            "-framework", "Cocoa",
+            "-framework", "GLUT",
+            "-framework", "OpenGL",
+        );
+
+    #endif
+
 
     if (!nob_cmd_run_sync_and_reset(&cmd)) {
         nob_log(ERROR, "failed to build");
