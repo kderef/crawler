@@ -1,48 +1,45 @@
 use std::{path::Path, sync::OnceLock};
 
+use crate::log;
+
 use macroquad::prelude::*;
 
-/// All the fonts used throughout the game, loaded once
-pub static FONTS: OnceLock<Fonts> = OnceLock::new();
+pub struct FontDesc(pub Box<str>, pub macroquad::text::Font);
 
-pub struct Fonts {
-    pub bbt_plus: Font,
-}
-
-impl Fonts {
-    // 'aaaaaa
-    pub fn main<'a>(&'a self) -> &'a Font {
-        &self.bbt_plus
+impl FontDesc {
+    pub async fn load(path: &str) -> Result<Self, macroquad::Error> {
+        log!("Loading font {path}");
+        Ok(Self(path.into(), load_ttf_font(path).await?))
+    }
+    pub async fn load_pixel(path: &str) -> Result<Self, macroquad::Error> {
+        Self::load(path).await.map(|mut f| {
+            f.1.set_filter(FilterMode::Nearest);
+            f
+        })
     }
 }
 
-/// Load font, then set filter to nearest
-pub async fn load_pixel_font(path: impl AsRef<str>) -> Result<Font, macroquad::Error> {
-    load_ttf_font(path.as_ref()) // load font and set filter
-        .await
-        .map(|mut f| {
-            f.set_filter(FilterMode::Nearest);
-            f
-        })
+impl AsRef<Font> for FontDesc {
+    fn as_ref(&self) -> &Font {
+        &self.1
+    }
 }
 
-/// Get FONTS or panic
-pub fn fonts() -> &'static Fonts {
-    FONTS.get().unwrap()
+pub struct Fonts {
+    pub bbt_plus: FontDesc,
 }
 
-pub fn custom_text(text: impl AsRef<str>, x: f32, y: f32, fs: u16, color: Color) -> TextDimensions {
-    draw_text_ex(
-        text.as_ref(),
-        x,
-        y,
-        TextParams {
-            font: Some(fonts().main()),
-            font_size: fs,
-            font_scale: 1.,
-            font_scale_aspect: 1.,
-            color,
-            rotation: 0.,
-        },
-    )
+impl Fonts {
+    pub async fn load() -> Result<Self, macroquad::Error> {
+        let me = Self {
+            bbt_plus: FontDesc::load_pixel("bbt/BigBlue_TerminalPlus.ttf").await?,
+        };
+
+        Ok(me)
+    }
+
+    // 'aaaaaa
+    pub fn main<'a>(&'a self) -> &'a Font {
+        self.bbt_plus.as_ref()
+    }
 }
