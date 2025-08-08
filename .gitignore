@@ -1,3 +1,9 @@
 /deps/*
 /bin/*
 log*
+
+
+# nob
+nob*
+!nob.c
+!nob.h

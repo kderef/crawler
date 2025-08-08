@@ -35,5 +35,7 @@ int main(void) {
 
     CloseWindow();
 
+    log_file_close();
+
     return 0;
 }
