@@ -3,6 +3,8 @@
 #define _STR(X) #X
 #define STR(X) _STR(X)
 
+#define STRLEN(S) (sizeof(S) * sizeof(*(S)))
+
 #include <stdbool.h>
 #include <stdint.h>
 

@@ -1,16 +1,20 @@
 #pragma once
 
 #include "util.c"
+#include "time.c"
+
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
+
 #include "raylib.h"
 
 // used by INFO, ERROR, ...
 #define _LOG(LVL, FMT, ...) \
-    TraceLog(LVL, __FILE_NAME__ ":" STR(__LINE__) " - " FMT, #__VA_ARGS__)
+    TraceLog(LVL, __FILE_NAME__ ":" STR(__LINE__) " - " FMT, ##__VA_ARGS__)
 
-#define INFO(FMT, ...) _LOG(LOG_INFO, FMT, #__VA_ARGS__)
-#define ERROR(FMT, ...) _LOG(LOG_ERROR, FMT, #__VA_ARGS__)
+#define INFO(FMT, ...) _LOG(LOG_INFO, FMT, ##__VA_ARGS__)
+#define ERROR(FMT, ...) _LOG(LOG_ERROR, FMT, ##__VA_ARGS__)
 
 static FILE* log_file = NULL;
 
@@ -23,10 +27,13 @@ bool log_file_open(const char* path) {
         return false;
     }
 
+    INFO("Successfully opened log file '%s' at %s", path, get_datetime());
+
     return true;
 }
 void log_file_close() {
-    INFO("Closing log file");
+    char* datetime = get_datetime();
+    INFO("[%s] Closing log file", datetime);
     if (log_file) fclose(log_file);
 }
 

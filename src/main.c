@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <errno.h>
 #include "raylib.h"
 
 #define MEM_DEBUG // tracking allocations
@@ -45,7 +46,6 @@ int main(void) {
         EndDrawing();
     }
     
-
     assets_unload();
 
     CloseAudioDevice();

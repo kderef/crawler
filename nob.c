@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 
     // flags
     nob_cmd_append(&cmd,
-        "-Ofast",
+        "-O3",
         "-Wall",
         "-I" PATH_RAYLIB "src",
         "-L" PATH_RAYLIB "src",

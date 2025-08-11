@@ -1,7 +1,7 @@
 /deps/*
 /bin/*
 log*
-
+**/.DS_Store
 
 # nob
 nob*

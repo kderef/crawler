@@ -11,13 +11,11 @@ void* mem_alloc(size_t size) {
     return malloc(size);
 }
 
-void mem_free(void* mem) {
-    if (mem) {
-        INFO("Freeing memory at %p", mem);
-        free(mem);
-    }
-    else ERROR("tried to free NULL memory");
-}
+#define mem_free(PTR) do { \
+        if (PTR) { \
+            INFO("Freeing memory at %p"); free(PTR); \
+        } else ERROR("Tried to free NULL memory"); \
+    } while (0)
 
 #else
 
