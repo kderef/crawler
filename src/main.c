@@ -4,6 +4,7 @@
 #include "raylib.h"
 
 #define MEM_DEBUG // tracking allocations
+#define LOG_TIMESTAMP
 
 #include "assets.c"
 #include "util.c"
@@ -12,10 +13,10 @@
 
 int main(void) {
     // setup logging
+    SetTraceLogCallback(tracelog_callback);
     if (!log_file_open("log.txt")) {
         ERROR("Failed to open log: %s", strerror(errno));
     }
-    SetTraceLogCallback(tracelog_callback);
 
     // -- init raylib
     uint flags = FLAG_MSAA_4X_HINT;

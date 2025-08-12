@@ -1,5 +1,7 @@
 #pragma once
 
+//! #define LOG_TIMESTAMP
+
 #include "util.c"
 #include "time.c"
 
@@ -12,6 +14,7 @@
 // used by INFO, ERROR, ...
 #define _LOG(LVL, FMT, ...) \
     TraceLog(LVL, __FILE_NAME__ ":" STR(__LINE__) " - " FMT, ##__VA_ARGS__)
+
 
 #define INFO(FMT, ...) _LOG(LOG_INFO, FMT, ##__VA_ARGS__)
 #define ERROR(FMT, ...) _LOG(LOG_ERROR, FMT, ##__VA_ARGS__)
@@ -33,7 +36,7 @@ bool log_file_open(const char* path) {
 }
 void log_file_close() {
     char* datetime = get_datetime();
-    INFO("[%s] Closing log file", datetime);
+    INFO("Closing log file at %s", datetime);
     if (log_file) fclose(log_file);
 }
 
@@ -53,15 +56,22 @@ void tracelog_callback(int lvl, const char* fmt, va_list args) {
     // SAFETY: lvl assumed to be in bounds
     char* lvl_str = levels[lvl];
 
+    #ifdef LOG_TIMESTAMP
+    char* datetime = get_datetime();
+    #  define _PRINT_FMT "<%s> %s", datetime
+    #else
+    #  define _PRINT_FMT "%s"
+    #endif
+
     // log to file
     if (log_file) {
-        fprintf(log_file, "%s", lvl_str);
+        fprintf(log_file, _PRINT_FMT, lvl_str);
         vfprintf(log_file, fmt, args);
         fputc('\n', log_file); // flush
     }
     
     // just log
-    printf("%s", lvl_str);
+    printf(_PRINT_FMT, lvl_str);
     vprintf(fmt, args);
     putchar('\n');
 }

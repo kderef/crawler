@@ -10,11 +10,16 @@ typedef enum {
     FNT_MAX,
 } FontID;
 
-static const char *font_paths[FNT_MAX] = {
-    [FNT_BBT] = "bbt/BigBlue_TerminalPlus.TTF",
-};
+typedef struct {
+    int filter;
+    char* path;
+    Font data;
+} FontInfo;
 
-static Font fonts[FNT_MAX] = {0};
+
+static FontInfo fonts[FNT_MAX] = {
+    [FNT_BBT] = {TEXTURE_FILTER_POINT, "font/bbt/BigBlue_TerminalPlus.TTF"},
+};
 
 bool fonts_load(const char *path) {
     const char *app_dir = GetApplicationDirectory();
@@ -22,12 +27,13 @@ bool fonts_load(const char *path) {
     ChangeDirectory(path);
 
     for (FontID i = 0; i < FNT_MAX; i++) {
-        fonts[i] = LoadFontEx(
-            font_paths[i],
+        fonts[i].data = LoadFontEx(
+            fonts[i].path,
             100,
             NULL,
             0
         );
+        SetTextureFilter(fonts[i].data.texture, fonts[i].filter);
     }
 
     ChangeDirectory(app_dir);
@@ -35,8 +41,12 @@ bool fonts_load(const char *path) {
     return true;
 }
 
+Font get_font(FontID id) {
+    return fonts[id].data;
+}
+
 void fonts_unload() {
     for (FontID i = 0; i < FNT_MAX; i++) {
-        UnloadFont(fonts[i]);
+        UnloadFont(get_font(i));
     }
 }

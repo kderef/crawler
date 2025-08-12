@@ -14,4 +14,8 @@ void assets_unload() {
     fonts_unload();
 }
 
+void assets_test() {
+    // test font
+}
+
 #undef TRY
