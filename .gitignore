@@ -1,6 +1,6 @@
 /deps/*
 /bin/*
-log*
+log*.txt
 **/.DS_Store
 
 # nob

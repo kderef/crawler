@@ -6,6 +6,7 @@
 #define MEM_DEBUG // tracking allocations
 #define LOG_TIMESTAMP
 
+#include "tileset.c"
 #include "assets.c"
 #include "util.c"
 #include "mem.c"
@@ -19,7 +20,7 @@ int main(void) {
     }
 
     // -- init raylib
-    uint flags = FLAG_MSAA_4X_HINT;
+    uint flags = FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE;
 
     SetConfigFlags(flags);
     InitWindow(800, 600, "hello world");
@@ -42,6 +43,8 @@ int main(void) {
 
         BeginDrawing();
         ClearBackground(BLACK);
+
+        assets_test();
 
         if (draw_fps) DrawFPS(0, 0);
         EndDrawing();

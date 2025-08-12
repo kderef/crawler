@@ -21,10 +21,7 @@ static FontInfo fonts[FNT_MAX] = {
     [FNT_BBT] = {TEXTURE_FILTER_POINT, "font/bbt/BigBlue_TerminalPlus.TTF"},
 };
 
-bool fonts_load(const char *path) {
-    const char *app_dir = GetApplicationDirectory();
-
-    ChangeDirectory(path);
+bool fonts_load() {
 
     for (FontID i = 0; i < FNT_MAX; i++) {
         fonts[i].data = LoadFontEx(
@@ -36,7 +33,6 @@ bool fonts_load(const char *path) {
         SetTextureFilter(fonts[i].data.texture, fonts[i].filter);
     }
 
-    ChangeDirectory(app_dir);
 
     return true;
 }

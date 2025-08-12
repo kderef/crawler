@@ -8,6 +8,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#define vec2(X, Y) ((Vector2){.x = X, .y = Y})
+#define rect(X, Y, W, H) ((Rectangle){.x = (X), .y = (Y), .width = (W), .height = (H)})
+#define texture_source_rec(TEX) rect(0, 0, (TEX).width, (TEX).height)
+
 typedef unsigned int uint;
 typedef unsigned char uchar;
 

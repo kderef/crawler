@@ -15,7 +15,6 @@
 #define _LOG(LVL, FMT, ...) \
     TraceLog(LVL, __FILE_NAME__ ":" STR(__LINE__) " - " FMT, ##__VA_ARGS__)
 
-
 #define INFO(FMT, ...) _LOG(LOG_INFO, FMT, ##__VA_ARGS__)
 #define ERROR(FMT, ...) _LOG(LOG_ERROR, FMT, ##__VA_ARGS__)
 
