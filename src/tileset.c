@@ -53,6 +53,48 @@ done:
     return ok;
 }
 
+Rectangle get_tile(Tile idx) {
+    Rectangle tile = {
+        .width = tileset.tile_width,
+        .height = tileset.tile_height,
+    };
+    
+    int x = tileset.tile_width * idx;
+    int y = 0;
+    if (x > tileset.width) {
+        y += tileset.tile_height;
+        x %= tileset.tile_width;
+    }
+    
+    // 2 -> (16, 0, 8, 8)
+    // 0 -> (0, 0, 8, 8)
+    tile.x = x;
+    tile.y = y;
+
+    return tile;
+}
+
+void tile_draw_rec(Tile tile, Rectangle dest, Color tint) {
+    Rectangle src = get_tile(tile);
+
+    DrawTexturePro(
+       tileset.texture,
+        src,
+        dest,
+        vec2(0, 0),
+        0.0,
+        tint
+    );
+}
+
+void tile_draw(Tile tile, int x, int y, Color tint) {
+    tile_draw_rec(
+        tile,
+        rect(x, y, tileset.tile_width, tileset.tile_height),
+        tint
+    );
+}
+
 void tileset_unload() {
     INFO("unloading tileset");
     UnloadTexture(tileset.texture);

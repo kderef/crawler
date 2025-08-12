@@ -6,13 +6,14 @@
 #define MEM_DEBUG // tracking allocations
 #define LOG_TIMESTAMP
 
+#include "game.c"
 #include "tileset.c"
 #include "assets.c"
 #include "util.c"
 #include "mem.c"
 #include "log.c"
 
-int main(void) {
+int init() {
     // setup logging
     SetTraceLogCallback(tracelog_callback);
     if (!log_file_open("log.txt")) {
@@ -35,9 +36,30 @@ int main(void) {
     }
     InitAudioDevice();
 
+    return 0;
+}
+
+void close() {
+    assets_unload();
+
+    CloseAudioDevice();
+    CloseWindow();
+
+    log_file_close();
+}
+
+int main(void) {
+    int exit_code = 0;
+
+    // -- 1: Initialise
+    exit_code = init();
+    if (exit_code != 0) goto shutdown;
+    
+    // -- 2: Game state
     bool run = true;
     bool draw_fps = true;
 
+    // -- 3: Game loop
     while (run) {
         run ^= WindowShouldClose();
 
@@ -49,13 +71,10 @@ int main(void) {
         if (draw_fps) DrawFPS(0, 0);
         EndDrawing();
     }
+
+    // 4: Game shutdown & cleanup
     
-    assets_unload();
-
-    CloseAudioDevice();
-    CloseWindow();
-
-    log_file_close();
-
-    return 0;
+shutdown:
+    close();
+    return exit_code;
 }

@@ -35,19 +35,20 @@ void assets_test() {
     DrawTexturePro(
         tileset.texture,
         texture_source_rec(tileset.texture),
-        texture_source_rec(tileset.texture),
-        // rect(0, 0, 1000, screen_h),
+        rect(0, 0, screen_w, screen_h),
         vec2(0, 0),
         0.0,
         WHITE
     );
+
+    tile_draw_rec(TILE_DEBUG, rect(50, 50, 200, 50), WHITE);
     
     // LAST: test font
     DrawTextEx(
         get_font(FNT_BBT),
-        "Hello from the debug screen! ABCDEFGH1234567890 (BBT)",
+        "(size 15.0) Hello from the debug screen! ABCDEFGH1234567890 (BBT)",
         vec2(100, 100),
-        30.0,
+        15.0,
         1.0,
         PURPLE
     );
