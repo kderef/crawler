@@ -17,10 +17,10 @@
 bool git_clone(const char* url, const char* tag, const char* dest) {
     Cmd cmd = {0};
 
-    nob_cmd_append(&cmd, "git", "clone", url, dest, "--depth=1");
+    cmd_append(&cmd, "git", "clone", url, dest, "--depth=1");
 
     if (tag) {
-        nob_cmd_append(&cmd, "--branch", tag);
+        cmd_append(&cmd, "--branch", tag);
     }
 
     if (!nob_cmd_run_sync(cmd)) {
