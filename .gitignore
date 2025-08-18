@@ -7,3 +7,8 @@ log*.txt
 nob*
 !nob.c
 !nob.h
+
+
+# Added by cargo
+
+/target
