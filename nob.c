@@ -105,7 +105,6 @@ int main(int argc, char** argv) {
             "-framework", "GLUT",
             "-framework", "OpenGL",
         );
-
     #endif
 
 

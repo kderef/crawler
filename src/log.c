@@ -1,6 +1,7 @@
 #pragma once
 
 //! #define LOG_TIMESTAMP
+//! #define LOG_COLORED
 
 #include "util.c"
 #include "time.c"
@@ -42,18 +43,19 @@ void log_file_close() {
 void tracelog_callback(int lvl, const char* fmt, va_list args) {
     // static char buf[512] = {0};
 
-    static char* levels[] = {
-        [LOG_ALL] = "",
-        [LOG_TRACE] = "[TRACE] ",
-        [LOG_DEBUG] = "[DEBUG] ",
-        [LOG_INFO] = "[INFO] ",
-        [LOG_WARNING] = "[WARNING] ",
-        [LOG_ERROR] = "[ERROR] ",
-        [LOG_FATAL] = "[FATAL] ",
+    static struct {char* color; char* note;} levels[] = {
+        [LOG_ALL] = {"", ""},
+        [LOG_TRACE] = {"\033[95m", "[TRACE] "},
+        [LOG_DEBUG] = {"\033[94m", "[DEBUG] "},
+        [LOG_INFO] = {"\033[92m", "[INFO] "},
+        [LOG_WARNING] = {"\033[93m", "[WARNING] "},
+        [LOG_ERROR] = {"\033[91m", "[ERROR] "},
+        [LOG_FATAL] = {"\033[31m", "[FATAL] "},
     };
 
     // SAFETY: lvl assumed to be in bounds
-    char* lvl_str = levels[lvl];
+    char* lvl_str = levels[lvl].note;
+    char* lvl_color = levels[lvl].color;
 
     #ifdef LOG_TIMESTAMP
     char* datetime = get_datetime();
