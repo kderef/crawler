@@ -107,6 +107,14 @@ int main(int argc, char** argv) {
         );
     #endif
 
+    #if defined(_WIN32)
+        nob_cmd_append(&cmd,
+             "-lopengl32",
+             "-lgdi32",
+             "-lwinmm",
+        );
+    #endif
+
 
     if (!nob_cmd_run_sync_and_reset(&cmd)) {
         nob_log(ERROR, "failed to build");
