@@ -5,12 +5,11 @@ log*.txt
 
 # nob
 nob*
-!nob.c
+!nob.cc
 !nob.h
 
 # test
 test*
-
 
 # Added by cargo
 
