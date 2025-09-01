@@ -1,5 +1,5 @@
 /deps/*
-/bin/*
+bin/*
 log*.txt
 **/.DS_Store
 
