@@ -12,6 +12,5 @@ nob.old
 # test
 test*
 
-# Added by cargo
-
-/target
+# logging
+log.txt*

@@ -14,8 +14,8 @@ typedef struct {
     const char* window_title;
 } Config;
 
-uint config_flags(const Config* conf) {
-    uint flags = 0;
+unsigned config_flags(const Config* conf) {
+    unsigned flags = 0;
 
     if (conf->resizable) flags |= FLAG_WINDOW_RESIZABLE;
     if (conf->hidpi) flags |= FLAG_WINDOW_HIGHDPI;

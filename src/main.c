@@ -2,6 +2,7 @@
 #include "config.h"
 #include <raylib.h>
 
+#include "log.c"
 #include "game.c"
 
 int main(int argc, char** argv) {
@@ -18,6 +19,14 @@ int main(int argc, char** argv) {
         .init_height = 600,
         .window_title = "crawler"
     };
+
+    // open the logging file
+    if (!log_open_file("log.txt")) {
+        perror("Failed to open log file");
+    }
+    else {
+        log_hook_raylib();
+    }
     
     Game game = {0};
 
@@ -29,6 +38,8 @@ int main(int argc, char** argv) {
     }
 
     game_close(&game);
+
+    log_close_file();
 
     return 0;
 }

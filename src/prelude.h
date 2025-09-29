@@ -1,5 +1,8 @@
 #pragma once
 
+/// silence annoying warnings
+#define _CRT_SECURE_NO_WARNINGS 1
+
 #include <stdbool.h>
 #include <stdint.h>
 
