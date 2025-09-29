@@ -2,11 +2,9 @@ bin/*
 log*.txt
 **/.DS_Store
 
-# nob
-a.out
-nob
-nob.exe
-nob.old
+# build process
+*.o
+*.a
 
 # test
 test*

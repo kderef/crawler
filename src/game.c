@@ -1,26 +1,13 @@
 #include "raylib.h"
-#include "config.h"
 #include "settings.c"
 #include <sys/types.h>
 
-typedef struct {
-    bool quit;
-    bool show_fps;
-    bool paused;
-} Game;
-
-// implementations
-void game_update(Game*);
-void game_draw(Game*);
-
-#include "game_draw.c"
-#include "game_update.c"
-
+#include "game.h"
 
 bool game_init(Game* game, const Config* conf) {
     uint flags = config_flags(conf);
 
-    settings_copy_config(conf);
+    settings_copy_config(&game->settings, conf);
     
     SetConfigFlags(flags);
 
@@ -28,10 +15,12 @@ bool game_init(Game* game, const Config* conf) {
     InitWindow(conf->init_width, conf->init_height, "crawler");
 
     // apply default settings
-    settings_load_default();
+    settings_load_default(&game->settings);
+
+    SetWindowSize(game->settings.screen_w, game->settings.screen_h);
 
     SetExitKey(0);
-    SetTargetFPS(settings.target_fps);
+    SetTargetFPS(game->settings.target_fps);
         
     InitAudioDevice();
 

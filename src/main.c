@@ -1,9 +1,8 @@
 #include "prelude.h"
 #include "config.h"
-#include <raylib.h>
 
 #include "log.c"
-#include "game.c"
+#include "game.h"
 
 int main(int argc, char** argv) {
     // ignore
