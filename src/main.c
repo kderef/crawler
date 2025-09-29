@@ -2,30 +2,33 @@
 #include "config.h"
 #include <raylib.h>
 
+#include "game.c"
+
 int main(int argc, char** argv) {
     // ignore
     (void)argc;
     (void)argv;
 
-    uint flags = FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE;
+    Config config = {
+        .resizable = true,
+        .hidpi = true,
+        .msaa_4x = true,
+        .vsync = false,
+        .init_width = 800,
+        .init_height = 600,
+        .window_title = "crawler"
+    };
+    
+    Game game = {0};
 
-    SetConfigFlags(flags);
+    game_init(&game, &config);
 
-    InitWindow(800, 600, WINDOW_TITLE);
-  
-    bool run = true;
-    bool show_fps = true;
-
-    while (run) {
-        run ^= WindowShouldClose();
-
-        BeginDrawing();
-
-        if (show_fps) DrawFPS(0, 0);
-        EndDrawing();
+    while (!game.quit) {
+        game_update(&game);
+        game_draw(&game);
     }
 
-    CloseWindow();
+    game_close(&game);
 
     return 0;
 }

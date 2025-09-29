@@ -4,9 +4,10 @@ log*.txt
 **/.DS_Store
 
 # nob
-nob*
-!nob.cc
-!nob.h
+a.out
+nob
+nob.exe
+nob.old
 
 # test
 test*

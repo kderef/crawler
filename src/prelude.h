@@ -19,4 +19,4 @@ typedef struct Vector2 vec2;
 typedef struct Vector3 vec3;
 typedef struct Vector4 vec4;
 typedef struct Rectangle rect;
-typedef struct Quaternion quat;
+#define quat Quaternion
