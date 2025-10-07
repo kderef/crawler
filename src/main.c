@@ -1,5 +1,4 @@
 #include "prelude.h"
-#include "config.h"
 
 #include "log.c"
 #include "game.h"
