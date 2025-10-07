@@ -32,21 +32,3 @@ void game_close(Game* game) {
     CloseWindow();
 }
 
-void game_update(Game* game) {
-    
-    // update state
-    game->quit ^= WindowShouldClose();
-}
-
-void game_draw(Game* game) {
-    
-    BeginDrawing();
-    ClearBackground(BLACK);
-
-    if (game->show_fps)
-        DrawFPS(0, 0);
-    
-    EndDrawing();
-}
-
-

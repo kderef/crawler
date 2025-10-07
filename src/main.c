@@ -1,5 +1,4 @@
-#include "prelude.h"
-
+//#define LOG_DISABLE
 #include "log.c"
 #include "game.h"
 
@@ -10,7 +9,7 @@ int main(int argc, char** argv) {
 
     Config config = {
         .resizable = true,
-        .hidpi = true,
+        .high_dpi = true,
         .msaa_4x = true,
         .vsync = false,
         .init_width = 800,

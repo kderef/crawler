@@ -20,7 +20,7 @@ typedef struct {
 /// Configuration used on game startup
 typedef struct {
     bool resizable;
-    bool hidpi;
+    bool high_dpi;
     bool msaa_4x;
     bool vsync;
     

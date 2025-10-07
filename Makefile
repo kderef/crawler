@@ -1,6 +1,6 @@
 CC = gcc
 LD = ld
-CFLAGS = -O3 -Iraylib/src -Wall
+CFLAGS = -O3 -Iraylib/src -Isrc -Wall
 CCFLAGS = -O3 
 
 MAIN = src/main.c
@@ -28,7 +28,7 @@ else
 endif
 
 $(BIN): main.o game.o $(LIBRAYLIB)
-	$(CC) main.o game.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
+	$(CC) game.o update.o draw.o main.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
 
 $(LIBRAYLIB):
 	make -C raylib/src
@@ -36,11 +36,11 @@ $(LIBRAYLIB):
 main.o: src/main.c
 	$(CC) $(CFLAGS) -c src/main.c
 
-game.o: src/game.c game_update.o game_draw.o
+game.o: src/game.c update.o draw.o
 	$(CC) $(CFLAGS) -c src/game.c
 
-game_update.o: src/game_update.c
-	$(CC) $(CFLAGS) -c src/game_update.c
+update.o: src/update/update.c
+	$(CC) $(CFLAGS) -c src/update/update.c
 	
-game_draw.o: src/game_draw.c
-	$(CC) $(CFLAGS) -c src/game_draw.c
+draw.o: src/draw/draw.c
+	$(CC) $(CFLAGS) -c src/draw/draw.c

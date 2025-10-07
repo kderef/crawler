@@ -6,12 +6,15 @@
 
 static FILE* log_file = NULL;
 
-#define LOG(FMT, ...) do { \
+#ifdef LOG_DISABLE
+#  define LOG(...)
+#else
+#  define LOG(FMT, ...) do { \
         char* datetime = get_datetime(); \
         fprintf(stderr, "[%s] " FMT "\n", datetime, ##__VA_ARGS__); \
         if (log_file) fprintf(log_file, "[%s] " FMT "\n", datetime, ##__VA_ARGS__); \
     } while (0)
-
+#endif
 
 #define DATETIME_BUF_LEN 32
 static char datetime_buf[DATETIME_BUF_LEN] = {0}; 
@@ -34,34 +37,30 @@ char* get_datetime() {
 
 void tracelog_callback(int log_level, const char* text, va_list args) {
     char* datetime = get_datetime();
+
+    // Use a single index for both color and description
+    struct Header {const char* str; const char* color;};
     
-    static const char* LEVELS[] = {
-        [LOG_ALL] = "ALL",
-        [LOG_DEBUG] = "DEBUG",
-        [LOG_FATAL] = "FATAL",
-        [LOG_ERROR] = "ERROR",
-        [LOG_INFO ] = "INFO",
-        [LOG_TRACE] = "TRACE",
-        [LOG_WARNING] = "WARNING",
+    static const struct Header HEADERS[] = {
+        [LOG_ALL]     = { "ALL", ""},
+        [LOG_DEBUG]   = { "DEBUG", ""},
+        [LOG_FATAL]   = { "FATAL", "\033[91m"},
+        [LOG_ERROR]   = { "ERROR", "\033[91m"},
+        [LOG_INFO ]   = { "INFO", "\033[92m"},
+        [LOG_TRACE]   = { "TRACE", "\033[95m"},
+        [LOG_WARNING] = { "WARNING", "\033[93m"},
     };
 
-    const char* color = "";
-    switch (log_level) {
-        case LOG_WARNING: color = "\033[93m"; break;
-        case LOG_ERROR:
-        case LOG_FATAL: color = "\033[91m"; break;
-        case LOG_INFO: color = "\033[92m"; break;
-        case LOG_TRACE: color = "\033[94m"; break;
-    }
+    const struct Header header = HEADERS[log_level];
 
     // write to console
-    fprintf(stdout, "[%s] %s[%s]\033[0m : ", datetime, color, LEVELS[log_level]);
+    fprintf(stdout, "[%s] %s[%s]\033[0m : ", datetime, header.color, header.str);
     vprintf(text, args);
     fprintf(stdout, "\n");
     
     // write to log file
     if (log_file) {
-        fprintf(log_file, "[%s] [%s]\033 : ", datetime, LEVELS[log_level]);
+        fprintf(log_file, "[%s] [%s]\033 : ", datetime, header.str);
         vfprintf(log_file, text, args);
         fprintf(log_file, "\n");
     }

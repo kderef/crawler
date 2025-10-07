@@ -3,11 +3,17 @@
 #include "settings.h"
 #include "prelude.h"
 
+typedef enum {
+    GAME_MAIN_MENU = 0,
+} GameState;
+
 /// The main game instance, initialized by `game_init()`
 typedef struct {
     bool quit;
     bool show_fps;
     bool paused;
+
+    GameState state;
 
     Settings settings;
     Keymap keymap;
