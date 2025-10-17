@@ -1,4 +1,5 @@
 #include "game.h"
+#include <raygui.h>
 
 #include "mainmenu.c"
 
@@ -6,8 +7,8 @@ void game_draw(Game* game) {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    switch (game->state) {
-        case GAME_MAIN_MENU:
+    switch (game->scene) {
+        case SCENE_MAIN:
             game_draw_mainmenu(game);
             break;
     }

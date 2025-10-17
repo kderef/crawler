@@ -4,8 +4,8 @@
 #include "prelude.h"
 
 typedef enum {
-    GAME_MAIN_MENU = 0,
-} GameState;
+    SCENE_MAIN = 0,
+} Scene;
 
 /// The main game instance, initialized by `game_init()`
 typedef struct {
@@ -13,7 +13,7 @@ typedef struct {
     bool show_fps;
     bool paused;
 
-    GameState state;
+    Scene scene;
 
     Settings settings;
     Keymap keymap;
