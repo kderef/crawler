@@ -12,9 +12,3 @@ test*
 
 # logging
 log.txt*
-crash.txt*
-
-
-# Added by cargo
-
-/target
