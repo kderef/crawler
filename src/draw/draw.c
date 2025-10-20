@@ -1,14 +1,16 @@
+#include "draw/theme.h"
 #include "game.h"
-#include <raygui.h>
+#include "prelude.h"
 
 #include "mainmenu.c"
+#include "raylib.h"
 
 void game_draw(Game* game) {
     BeginDrawing();
     ClearBackground(BLACK);
 
     switch (game->scene) {
-        case SCENE_MAIN:
+        case SCENE_MENU:
             game_draw_mainmenu(game);
             break;
     }
@@ -18,3 +20,4 @@ void game_draw(Game* game) {
     
     EndDrawing();
 }
+

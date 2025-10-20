@@ -28,7 +28,7 @@ else
 endif
 
 $(BIN): main.o game.o $(LIBRAYLIB) raygui.o
-	$(CC) game.o update.o draw.o main.o raygui.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
+	$(CC) game.o update.o draw.o main.o raygui.o assets.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
 
 $(LIBRAYLIB):
 	make -C raylib/src
@@ -36,15 +36,18 @@ $(LIBRAYLIB):
 raygui.o: raygui.c
 	$(CC) -Iraylib/src -c raygui.c
 
-main.o: src/main.c
+main.o: src/main.c src/settings.c src/settings.h
 	$(CC) $(CFLAGS) -c src/main.c
 
-game.o: src/game.c update.o draw.o
+game.o: src/game.c update.o draw.o assets.o
 	$(CC) $(CFLAGS) -c src/game.c
 
-update.o: src/update/update.c
+assets.o: src/assets.c src/assets.h
+	$(CC) $(CFLAGS) -c src/assets.c
+
+update.o: src/update/*.[ch]
 	$(CC) $(CFLAGS) -c src/update/update.c
 	
-draw.o: src/draw/draw.c
+draw.o: src/draw/*.[ch]
 	$(CC) $(CFLAGS) -c src/draw/draw.c
 

@@ -14,7 +14,6 @@ static FILE* log_file = NULL;
         fprintf(stderr, "[%s] " FMT "\n", datetime, ##__VA_ARGS__); \
         if (log_file) fprintf(log_file, "[%s] " FMT "\n", datetime, ##__VA_ARGS__); \
     } while (0)
-#endif
 
 #define DATETIME_BUF_LEN 32
 static char datetime_buf[DATETIME_BUF_LEN] = {0}; 
@@ -91,3 +90,5 @@ void log_close_file() {
         fclose(log_file);
     }
 }
+
+#endif // #ifndef LOG_DISABLE

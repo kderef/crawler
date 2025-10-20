@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
         .high_dpi = true,
         .msaa_4x = true,
         .vsync = false,
+        .fullscreen =false,
         .init_width = 800,
         .init_height = 600,
         .window_title = "crawler"
@@ -28,12 +29,14 @@ int main(int argc, char** argv) {
     Game game = {0};
 
     game_init(&game, &config);
+    game_load_assets(&game);
 
     while (!game.quit) {
         game_update(&game);
         game_draw(&game);
     }
 
+    game_unload_assets(&game);
     game_close(&game);
 
     log_close_file();

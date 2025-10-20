@@ -4,8 +4,9 @@
 #include "prelude.h"
 
 typedef enum {
-    SCENE_MAIN = 0,
+    SCENE_MENU = 0,
 } Scene;
+
 
 /// The main game instance, initialized by `game_init()`
 typedef struct {
@@ -30,3 +31,9 @@ void game_update(Game*);
 
 /// Draw the game frame using the data from game_update()
 void game_draw(Game*);
+
+/// Load assets and data
+void game_load_assets(Game*);
+
+/// Unload assets and data, call before game_close()
+void game_unload_assets(Game*);

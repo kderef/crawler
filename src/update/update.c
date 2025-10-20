@@ -6,8 +6,7 @@ void game_update(Game* game) {
     game->quit ^= WindowShouldClose();
 
     switch (game->scene) {
-        case SCENE_MAIN:
-            
+        case SCENE_MENU:
             break;
     }
 }

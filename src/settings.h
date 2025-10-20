@@ -23,6 +23,7 @@ typedef struct {
     bool high_dpi;
     bool msaa_4x;
     bool vsync;
+    bool fullscreen;
     
     int init_width;
     int init_height;
