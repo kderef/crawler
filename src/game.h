@@ -1,15 +1,19 @@
 #pragma once
 
+struct Game;
+
 #include "settings.h"
 #include "prelude.h"
 
+#include "level/level.h"
+
 typedef enum {
     SCENE_MENU = 0,
+    SCENE_TEST,
 } Scene;
 
-
 /// The main game instance, initialized by `game_init()`
-typedef struct {
+typedef struct Game {
     bool quit;
     bool show_fps;
     bool paused;
@@ -18,6 +22,8 @@ typedef struct {
 
     Settings settings;
     Keymap keymap;
+
+    Level current_level;
 } Game;
 
 /// Returns true if the game was successfully started.

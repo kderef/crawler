@@ -2,7 +2,9 @@
 #include "game.h"
 #include "prelude.h"
 
-#include "mainmenu.c"
+#include "scene/main_menu/draw.c"
+#include "scene/test/draw.c"
+
 #include "raylib.h"
 
 void game_draw(Game* game) {
@@ -11,7 +13,10 @@ void game_draw(Game* game) {
 
     switch (game->scene) {
         case SCENE_MENU:
-            game_draw_mainmenu(game);
+            scene_mainmenu_draw(game);
+            break;
+        case SCENE_TEST:
+            scene_test_draw(game);
             break;
     }
 

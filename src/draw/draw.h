@@ -6,7 +6,7 @@
 
 inline void draw_text(const char* text, vec2 pos, float size, Color color) {
     DrawTextEx(
-        fonts[FT_MAIN],
+        gfont,
         text,
         pos,
         size,

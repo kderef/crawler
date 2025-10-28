@@ -4,29 +4,19 @@
 
 #include "raygui_style.c"
 
-Font fonts[FT_MAX];
+Font gfont;
 
-inline Font load_font(const char* path) {
-    Font f = LoadFontEx(
-        path,
-        100,
+void load_fonts() {
+    gfont = LoadFontEx(
+        FONT_PATH,
+        12,
         0,
         0
     );
-
-    return f;
-}
-
-void load_fonts() {
-    for (int i = 0; i < FT_MAX; i++) {
-        fonts[i] = load_font(
-            FONT_PATHS[i]
-        );
-    }
-
+    
     // apply pixel filter
     SetTextureFilter(
-        fonts[FT_MAIN].texture,
+        gfont.texture,
         TEXTURE_FILTER_POINT
     );
 }
@@ -34,13 +24,10 @@ void load_fonts() {
 void game_load_assets(Game* game) {
     load_fonts();
 
-    raygui_load_style(fonts[FT_MAIN]);
+    raygui_load_style(gfont);
 }
 
 void game_unload_assets(Game* game) {
-    // 1. fonts
-    for (int i = 0; i < FT_MAX; i++) {
-        UnloadFont(fonts[i]);
-    }
+    UnloadFont(gfont);
 }
 

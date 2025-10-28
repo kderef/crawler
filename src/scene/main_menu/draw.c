@@ -5,12 +5,14 @@
 #include "prelude.h"
 #include "game.h"
 
-#include "draw.h"
-#include "theme.h"
+#include "draw/draw.h"
+#include "draw/theme.h"
 
-#include "ui.c"
+#include "scene/scene.c"
 
-void game_draw_mainmenu(Game* game) {
+#include "draw/ui.c"
+
+void scene_mainmenu_draw(Game* game) {
     const rect screen = screen_rect();
     const vec2 screen_center = {screen.width / 2, screen.height / 2};
 
@@ -41,5 +43,5 @@ void game_draw_mainmenu(Game* game) {
     if (ui_button(
         (rect) { 10, 100, 200, 50 },
         "play"
-    )) game->scene = SCENE_TEST;
+    )) scene_transition(game, SCENE_TEST);
 }

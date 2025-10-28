@@ -17,16 +17,14 @@ bool ui_button(rect bounds, const char* text) {
     const Color fg = hovering? theme.fg0 : theme.fg;
     const Color border = hovering? theme.gray_s : theme.gray;
 
-    pprintln(bounds);
-
     // draw the background, outline
-    DrawRectangleRec(bounds, theme.fg);
+    DrawRectangleRec(bounds, bg);
     DrawRectangleLinesEx(bounds, 3.0, border);
 
     const float font_size = bounds.width * 0.1;
 
     const vec2 text_size = MeasureTextEx(
-        fonts[FT_MAIN],
+        gfont,
         text,
         font_size,
         1

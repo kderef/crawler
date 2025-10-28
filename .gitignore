@@ -7,7 +7,6 @@ log*.txt
 *.a
 
 # test
-test*
 
 # logging
 log.txt*

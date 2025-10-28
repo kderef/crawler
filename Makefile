@@ -3,7 +3,7 @@ LD = ld
 CFLAGS = -O3 -Iraylib/src -Iraygui/src -Isrc -Wall
 CCFLAGS = -O3 
 
-MAIN = src/main.c
+MAIN = src/main.cc
 BIN = bin/crawler
 
 LIBRAYLIB = raylib/src/libraylib.a
@@ -27,8 +27,8 @@ else
 	endif
 endif
 
-$(BIN): main.o game.o $(LIBRAYLIB) raygui.o
-	$(CC) game.o update.o draw.o main.o raygui.o assets.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
+$(BIN): level.o assets.o draw.o update.o game.o main.o $(LIBRAYLIB) raygui.o
+	$(CC) game.o level.o assets.o draw.o update.o main.o raygui.o $(LIBRAYLIB) $(CCFLAGS) -o $(BIN)
 
 $(LIBRAYLIB):
 	make -C raylib/src
@@ -36,18 +36,20 @@ $(LIBRAYLIB):
 raygui.o: raygui.c
 	$(CC) -Iraylib/src -c raygui.c
 
-main.o: src/main.c src/settings.c src/settings.h
+main.o: src/main.c src/log.c src/scene/scene.c
 	$(CC) $(CFLAGS) -c src/main.c
 
-game.o: src/game.c update.o draw.o assets.o
+game.o:  src/game.c src/game.h src/scene/scene.c
 	$(CC) $(CFLAGS) -c src/game.c
+
+update.o: src/update/*update* src/scene/*/*update*
+	$(CC) $(CFLAGS) -c src/update/update.c
+
+draw.o: src/draw/*draw* src/scene/*/*draw*
+	$(CC) $(CFLAGS) -c src/draw/draw.c
 
 assets.o: src/assets.c src/assets.h
 	$(CC) $(CFLAGS) -c src/assets.c
 
-update.o: src/update/*.[ch]
-	$(CC) $(CFLAGS) -c src/update/update.c
-	
-draw.o: src/draw/*.[ch]
-	$(CC) $(CFLAGS) -c src/draw/draw.c
-
+level.o: src/level/*
+	$(CC) $(CFLAGS) -c src/level/level.c
