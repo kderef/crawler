@@ -1,6 +1,11 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
+mod camera;
 mod terminal;
 
-use macroquad::prelude::*;
+use macroquad::{miniquad::conf::Platform, prelude::*};
+
+use crate::camera::CameraController;
 
 /*
 - implement Terminal struct
@@ -10,17 +15,38 @@ fn conf() -> Conf {
     Conf {
         window_title: "crawler".into(),
         window_resizable: true,
-        high_dpi: true,
-        sample_count: 2,
 
+        window_width: 800,
+        window_height: 600,
+
+        high_dpi: true,
+        sample_count: 4,
         ..Default::default()
     }
 }
 
 #[macroquad::main(conf)]
 async fn main() {
+    let mut camera = CameraController::new();
+    camera.set_active(true);
+    camera.set_fov(70.0);
+
     loop {
-        draw_text("hallo!", 50., 50., 30., WHITE);
+        clear_background(BLACK);
+
+        camera.update();
+        camera.move_free();
+        camera.look();
+
+        set_camera(&camera);
+        {
+            draw_grid(1000, 20.0, GRAY, WHITE);
+            draw_cube(vec3(-20., 3., 3.), vec3(2., 10., 2.), None, RED);
+        }
+        set_default_camera();
+
+        draw_text("h1llo!", 50., 50., 30., WHITE);
+        draw_fps();
         next_frame().await;
     }
 }
