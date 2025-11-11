@@ -1,10 +1,12 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod camera;
+mod player;
+mod scene;
 
 use macroquad::{miniquad::conf::Platform, prelude::*};
 
-use crate::camera::CameraController;
+use crate::{camera::CameraController, player::Player, scene::test_scene};
 
 fn conf() -> Conf {
     Conf {
@@ -22,22 +24,25 @@ fn conf() -> Conf {
 
 #[macroquad::main(conf)]
 async fn main() {
-    let mut camera = CameraController::new();
-    camera.set_active(true);
-    camera.set_fov(70.0);
-    camera.set_free(true);
+    let mut player = Player::new();
+
+    player.camera.set_active(true);
+    player.camera.set_fov(70.0);
+    player.camera.set_sensitivity(40.0);
+
+    let mut scene = test_scene();
 
     loop {
         clear_background(BLACK);
 
-        camera.update();
-        camera.movement();
-        camera.look();
+        player.update_movement();
+        player.update_camera();
 
-        set_camera(&camera);
+        set_camera(&player.camera);
         {
             draw_grid(1000, 20.0, GRAY, WHITE);
             draw_cube(vec3(-20., 3., 3.), vec3(2., 10., 2.), None, RED);
+            scene.draw();
         }
         set_default_camera();
 
