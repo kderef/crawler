@@ -1,15 +1,10 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod camera;
-mod terminal;
 
 use macroquad::{miniquad::conf::Platform, prelude::*};
 
 use crate::camera::CameraController;
-
-/*
-- implement Terminal struct
-*/
 
 fn conf() -> Conf {
     Conf {
@@ -30,12 +25,13 @@ async fn main() {
     let mut camera = CameraController::new();
     camera.set_active(true);
     camera.set_fov(70.0);
+    camera.set_free(true);
 
     loop {
         clear_background(BLACK);
 
         camera.update();
-        camera.move_free();
+        camera.movement();
         camera.look();
 
         set_camera(&camera);

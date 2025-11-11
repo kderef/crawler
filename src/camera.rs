@@ -10,6 +10,8 @@ pub struct CameraController {
     pitch: f32,
     front: Vec3,
     right: Vec3,
+
+    free: bool,
 }
 
 impl CameraController {
@@ -23,6 +25,14 @@ impl CameraController {
 
         self.active = active;
     }
+
+    pub fn set_free(&mut self, free: bool) {
+        self.free = free;
+    }
+    pub fn toggle_free(&mut self) {
+        self.free ^= true;
+    }
+
     pub fn set_fov(&mut self, degrees: f32) {
         let radians = degrees.to_radians();
         self.camera.fovy = radians;
@@ -75,7 +85,20 @@ impl CameraController {
         // self.camera.up = right.cross(front).normalize();
     }
 
-    pub fn move_free(&mut self) {
+    pub fn movement(&mut self) {
+        if self.free {
+            self.movement_free();
+        } else {
+            self.movement_grounded();
+        }
+    }
+
+    fn movement_grounded(&mut self) {
+        let dt = get_frame_time();
+        let speed = dt * 10.0;
+    }
+
+    fn movement_free(&mut self) {
         let dt = get_frame_time();
         let speed = dt * 10.0;
 
@@ -90,6 +113,13 @@ impl CameraController {
         }
         if is_key_down(KeyCode::D) {
             self.camera.position += self.right * speed;
+        }
+
+        if is_key_down(KeyCode::Space) {
+            self.camera.position.y += speed;
+        }
+        if is_key_down(KeyCode::LeftShift) {
+            self.camera.position.y -= speed;
         }
     }
 
