@@ -1,8 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use sdl2::event::Event;
+use sdl2::event::{Event, WindowEvent};
 use sdl2::keyboard::Keycode;
-use sdl2::messagebox::{MessageBoxFlag, show_message_box, show_simple_message_box};
+use sdl2::messagebox::{MessageBoxFlag, show_simple_message_box};
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 use sdl2::{Sdl, VideoSubsystem};
@@ -12,6 +12,9 @@ pub struct App {
     sdl: Sdl,
     video: VideoSubsystem,
     canvas: WindowCanvas,
+    display: i32,
+    /// (ddpi, hdpi, vdpi)
+    dpi: (f32, f32, f32),
 }
 
 fn main() {
@@ -28,9 +31,17 @@ fn main() {
 
     window.raise();
 
+    let display = window.display_index().unwrap_or(0);
     let canvas = window.into_canvas().build().unwrap();
+    let dpi = video.display_dpi(display).unwrap();
 
-    let mut app = App { sdl, video, canvas };
+    let mut app = App {
+        sdl,
+        video,
+        canvas,
+        display,
+        dpi,
+    };
 
     if let Err(e) = run(&mut app) {
         let flags = MessageBoxFlag::ERROR;
@@ -41,16 +52,38 @@ fn main() {
 }
 
 pub fn run(app: &mut App) -> Result<(), String> {
-    let App { canvas, sdl, video } = app;
+    let App {
+        canvas,
+        sdl,
+        video,
+        display,
+        dpi,
+    } = app;
 
     canvas.set_draw_color(Color::RGB(255, 0, 0));
     canvas.clear();
     canvas.present();
+
+    let (w, h) = canvas.output_size()?;
+    let (mut w, mut h) = (w as i32, h as i32);
+
     let mut event_pump = sdl.event_pump()?;
 
     'running: loop {
         for event in event_pump.poll_iter() {
             match event {
+                Event::Window {
+                    timestamp: _,
+                    window_id: _,
+                    win_event,
+                } => match win_event {
+                    WindowEvent::SizeChanged(nw, nh) | WindowEvent::Resized(nw, nh) => {
+                        w = (nw as f32 * dpi.1) as i32;
+                        h = (nh as f32 * dpi.2) as i32;
+                    }
+                    WindowEvent::DisplayChanged(_) => {}
+                    _ => {}
+                },
                 Event::Quit { .. }
                 | Event::KeyDown {
                     keycode: Some(Keycode::Escape),
@@ -60,7 +93,12 @@ pub fn run(app: &mut App) -> Result<(), String> {
             }
         }
 
+        canvas.set_draw_color(Color::RGB(255, 0, 0));
         canvas.clear();
+
+        canvas.set_draw_color(Color::WHITE);
+        canvas.draw_line((0, 0), (w as i32, h as i32));
+
         canvas.present();
         std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 30));
         // The rest of the game loop goes here...
