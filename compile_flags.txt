@@ -1,0 +1,3 @@
+-Iraylib/src
+-Isrc
+-Iraygui/src
