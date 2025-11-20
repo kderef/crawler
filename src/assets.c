@@ -24,6 +24,8 @@ void load_fonts() {
 void game_load_assets(Game* game) {
     load_fonts();
 
+    // load textures
+
     raygui_load_style(gfont);
 }
 
