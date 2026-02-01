@@ -1,6 +1,5 @@
 #include "raylib.h"
 #include "settings.c"
-#include <stdio.h>
 #include <sys/types.h>
 
 #include "game.h"

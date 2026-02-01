@@ -19,14 +19,14 @@ inline rect screen_rect() {
     return (rect) {
         .x = 0,
         .y = 0,
-        .width = GetScreenWidth(),
-        .height = GetScreenHeight(),
+        .width = (float)GetRenderWidth(),
+        .height = (float)GetRenderHeight(),
     };
 }
 
 inline vec2 get_screen_size() {
     return (vec2) {
-        GetScreenWidth(),
-        GetScreenHeight()
+        (float)GetRenderWidth(),
+        (float)GetRenderHeight()
     };
 }

@@ -13,6 +13,8 @@ void game_draw(Game* game) {
         case SCENE_MENU:
             game_draw_mainmenu(game);
             break;
+        default:
+            break;
     }
 
     if (game->show_fps)

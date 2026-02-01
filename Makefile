@@ -10,11 +10,13 @@ LIBRAYLIB = raylib/src/libraylib.a
 
 # platform flags
 LINUX_FLAGS =
+DEL := rm
 
 # check OS
 ifeq ($(OS), Windows_NT)
 	# WINDOWS
-	CCFLAGS += -lwinmm -lgdi32 -lopengl32
+	CCFLAGS += -lwinmm -lgdi32 -lopengl32 -static
+	DEL := cmd /C del
 else
 	UNAME_S := $(shell uname -s)
 	# MACOS
@@ -51,3 +53,6 @@ update.o: src/update/*.[ch]
 draw.o: src/draw/*.[ch]
 	$(CC) $(CFLAGS) -c src/draw/draw.c
 
+clean:
+	$(DEL) *.o
+	$(DEL) bin\*

@@ -1,5 +1,4 @@
 #include "prelude.h"
-
 #include "settings.h"
 
 #include <raylib.h>

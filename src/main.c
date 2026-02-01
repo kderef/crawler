@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     (void)argc;
     (void)argv;
 
-    Config config = {
+    const Config config = {
         .resizable = true,
         .high_dpi = true,
         .msaa_4x = true,
@@ -21,8 +21,7 @@ int main(int argc, char** argv) {
     // open the logging file
     if (!log_open_file("log.txt")) {
         perror("Failed to open log file");
-    }
-    else {
+    } else {
         log_hook_raylib();
     }
     

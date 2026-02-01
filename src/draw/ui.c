@@ -12,15 +12,14 @@ bool ui_button(rect bounds, const char* text) {
     const vec2 mouse_pos = GetMousePosition();
     const rect screen = screen_rect();
     const bool hovering = CheckCollisionPointRec(mouse_pos, bounds);
+    const bool mouse_clicked = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
 
-    const Color bg = hovering? theme.bg3 : theme.bg0;
+    const Color bg = hovering? (mouse_clicked? theme.bg0_s : theme.bg3) : theme.bg0;
     const Color fg = hovering? theme.fg0 : theme.fg;
     const Color border = hovering? theme.gray_s : theme.gray;
 
-    pprintln(bounds);
-
     // draw the background, outline
-    DrawRectangleRec(bounds, theme.fg);
+    DrawRectangleRec(bounds, bg);
     DrawRectangleLinesEx(bounds, 3.0, border);
 
     const float font_size = bounds.width * 0.1;
@@ -49,11 +48,5 @@ bool ui_button(rect bounds, const char* text) {
         fg
     );
 
-    // check if it was clicked
-    if (!hovering) return false;
-
-    // clicked
-    const bool mouse_clicked = IsMouseButtonPressed(MOUSE_LEFT_BUTTON);
-
-    return mouse_clicked;
+    return mouse_clicked && hovering;
 }

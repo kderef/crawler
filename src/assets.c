@@ -9,7 +9,7 @@ Font fonts[FT_MAX];
 inline Font load_font(const char* path) {
     Font f = LoadFontEx(
         path,
-        100,
+        12,
         0,
         0
     );
@@ -32,6 +32,8 @@ void load_fonts() {
 }
 
 void game_load_assets(Game* game) {
+    // try to load the config
+    
     load_fonts();
 
     raygui_load_style(fonts[FT_MAIN]);

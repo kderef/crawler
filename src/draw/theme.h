@@ -13,8 +13,8 @@
 
 #define rgb(HEX) (Color) { \
     .r = (unsigned char)((HEX >> 16) & 0xFF), \
-    .g = (unsigned char)((HEX >> 8) & 0xFF), \
-    .b = (unsigned char)((HEX) & 0xFF), \
+    .g = (unsigned char)((HEX >> 8 ) & 0xFF), \
+    .b = (unsigned char)((HEX      ) & 0xFF), \
     .a = 0xFF, \
 }
 

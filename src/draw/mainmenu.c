@@ -11,13 +11,16 @@
 #include "ui.c"
 
 void game_draw_mainmenu(Game* game) {
+    ClearBackground(theme.bg0_h);
+    
     const rect screen = screen_rect();
-    const vec2 screen_center = {screen.width / 2, screen.height / 2};
+    const vec2 screen_center = {screen.width / 2.0, screen.height / 2.0};
 
     float base_font_size = screen.width * 0.05;
 
     // draw the title
     float title_font_size = base_font_size * 1.2;
+
     vec2 title_size = MeasureTextEx(
         fonts[FT_MAIN],
         "CRAWLER",
@@ -25,8 +28,10 @@ void game_draw_mainmenu(Game* game) {
         1.0
     );
 
+    pprintln(title_size);
+
     vec2 title_pos = {
-        screen_center.x - title_size.x / 2,
+        screen_center.x - title_size.x / 2.0,
         title_font_size
     };
     
@@ -38,8 +43,5 @@ void game_draw_mainmenu(Game* game) {
     );
 
     // draw the controls
-    ui_button(
-        (rect) { 10, 100, 200, 50 },
-        "play"
-    );
+    ui_button( (rect) { 10, 100, 200, 50 }, "play" );
 }
