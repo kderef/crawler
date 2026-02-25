@@ -8,3 +8,8 @@ log*.txt
 
 # logging
 log.txt*
+
+
+# Added by cargo
+
+/target
