@@ -26,5 +26,5 @@ $(BIN): $(LIBRAYLIB) $(GAME) src/*
 $(GAME): game/*
 	$(CC) $(FLAGS) -c game/game.c -o $(GAME)
 
-$(LIBRAYLIB):
+$(LIBRAYLIB): raylib/src/*.[ch]
 	make -C raylib/src
