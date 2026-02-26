@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include "skybox.c"
+
 #include <time.h>
 #include <raylib.h>
 #include <stdio.h>
@@ -38,7 +40,16 @@ void game_open(Game* g) {
     SetRandomSeed(time(0));
 }
 
+void game_load(Game* g) {
+    Image img_test1 = LoadImage("textures/skybox_test1.png");
+    g->tex_test1 = LoadTextureFromImage(img_test1);
+    g->skybox = skybox_generate(img_test1);
+    UnloadImage(img_test1);
+}
+
 void game_close(Game* g) {
+    skybox_unload(&g->skybox);
+        
     CloseAudioDevice();
     CloseWindow();
 }
@@ -55,6 +66,8 @@ void game_draw(Game* g) {
 
     BeginMode3D(g->camera);
     {
+        skybox_draw(&g->skybox);
+        
         DrawGrid(10, 1.0);
 
         DrawCube(

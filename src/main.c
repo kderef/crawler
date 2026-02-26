@@ -17,6 +17,7 @@ int main(void) {
     Game g = game_init(conf);
 
     game_open(&g);
+    game_load(&g);
 
     while (g.running) {
         game_update(&g);

@@ -5,6 +5,11 @@
 #include <stdbool.h>
 
 typedef struct {
+    Mesh cube;
+    Model model;
+} Skybox;
+
+typedef struct {
     const char* title;
     int width, height;
     
@@ -21,9 +26,13 @@ typedef struct {
 
     // camera system
     Camera3D camera;
+    Skybox skybox;
+
+    Texture tex_test1;
 } Game;
 
 Game game_init(GameConfig);
+void game_load(Game*);
 
 void game_open(Game*);
 void game_close(Game*);
@@ -32,5 +41,7 @@ void game_close(Game*);
 
 void game_update(Game*);
 void game_draw(Game*);
+
+
 
 #endif // GAME_H
