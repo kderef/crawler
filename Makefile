@@ -1,14 +1,15 @@
 CC = gcc
-CFLAGS = -Iraylib/src -I.
+CFLAGS = -Iraylib/src -I. -Wall -Wextra -s -O2
 
 LIBRAYLIB = raylib/src/libraylib.a
 
 BIN = bin/game
-GAME = bin/game.o
+O_GAME = bin/game.o
+O_MAIN = bin/main.o
 
 ifdef OS
 	# Windows
-	OSFLAGS =
+	OSFLAGS = -lgdi32 -lwinmm
 else
 	ifeq ($(shell uname), Linux)
 		# TODO
@@ -20,11 +21,14 @@ endif
 
 FLAGS = $(CFLAGS) $(OSFLAGS)
 
-$(BIN): $(LIBRAYLIB) $(GAME) src/*
-	$(CC) $(FLAGS) $(LIBRAYLIB) $(GAME) src/main.c -o $(BIN)
+$(BIN): $(LIBRAYLIB) $(O_GAME) $(O_MAIN)
+	$(CC) $(O_GAME) $(O_MAIN) $(LIBRAYLIB) -o $(BIN) $(FLAGS)
 
-$(GAME): game/*
-	$(CC) $(FLAGS) -c game/game.c -o $(GAME)
+$(O_MAIN): src/main.c
+	$(CC) $(FLAGS) -c src/main.c -o $(O_MAIN)
+
+$(O_GAME): game/*
+	$(CC) $(FLAGS) -c game/game.c -o $(O_GAME)
 
 $(LIBRAYLIB): raylib/src/*.[ch]
 	make -C raylib/src
