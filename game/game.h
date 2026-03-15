@@ -16,6 +16,7 @@ typedef struct {
     int target_fps;
     bool vsync;
     bool resizable;
+    bool msaa_4x;
 
     float fovy;
 } GameConfig;

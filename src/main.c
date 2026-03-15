@@ -10,6 +10,7 @@ int main(void) {
         .target_fps = 120,
         .resizable = true,
         .vsync = false,
+        .msaa_4x = true,
 
         .fovy = 80.0,
     };

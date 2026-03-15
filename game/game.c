@@ -23,6 +23,7 @@ Game game_init(GameConfig conf) {
 
     if (conf.resizable) flags |= FLAG_WINDOW_RESIZABLE;
     if (conf.vsync) flags |= FLAG_VSYNC_HINT;
+    if (conf.msaa_4x) flags |= FLAG_MSAA_4X_HINT;
 
     SetConfigFlags(flags);
     
