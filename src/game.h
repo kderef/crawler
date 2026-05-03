@@ -23,7 +23,6 @@ typedef struct {
     bool running;
 
     // systems
-    Video video;
     Audio audio;
 
     // UI

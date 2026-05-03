@@ -13,7 +13,6 @@ Game game_init(GameConfig conf) {
         .running = true,
         .pause_menu = pause_menu_new(),
         .player_camera = player_camera_new(),
-        .video = video_new(conf.video_conf),
         .audio = audio_new(),
     };
     
@@ -22,7 +21,7 @@ Game game_init(GameConfig conf) {
 
 void game_open(Game* g) {
     // Video init
-    video_init(&g->video);
+    video_init(g->config.video_conf);
 
     // Audio init
     audio_init(&g->audio);
@@ -47,7 +46,7 @@ void game_close(Game* g) {
     player_camera_set_grab(&g->player_camera, false);
         
     audio_close(&g->audio);
-    video_close(&g->video);
+    video_close();
 }
 
 void game_update(Game* g) {
@@ -61,7 +60,7 @@ void game_update(Game* g) {
     }
 
     if (IsKeyPressed(KEY_F11)) {
-        video_toggle_fullscreen(&g->video);
+        video_toggle_fullscreen();
     }
 
     if (!paused) {
@@ -93,7 +92,7 @@ void game_draw(Game* g) {
 
     pause_menu_draw(&g->pause_menu);
 
-    DrawFPS(0, 0);
+    video_draw_debug();
     EndDrawing();
 }
 

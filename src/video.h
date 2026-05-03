@@ -15,21 +15,33 @@ typedef struct {
     bool resizable;
 } VideoConfig;
 
-typedef struct {
-    VideoConfig config;
+// Video video_new(VideoConfig);
 
-    bool fullscreen;
-} Video;
+void video_init(VideoConfig);
+void video_close();
 
-Video video_new(VideoConfig);
+// video configuration at runtime
 
-void video_init(Video*);
-void video_close(Video*);
+int video_set_fps(int);
+bool video_toggle_fullscreen();
+bool video_set_fullscreen(bool);
 
-int video_set_fps(Video*, int);
-bool video_toggle_fullscreen(Video*);
-bool video_set_fullscreen(Video*, bool);
+// video info
+
+bool video_get_state(unsigned int flag);
+void video_set_state(unsigned int flags);
+
+bool video_is_fullscreen();
+bool video_is_resizable();
+bool video_is_msaa();
+bool video_is_vsync();
+bool video_is_minimized();
+bool video_is_maximized();
 
 int video_width();
 int video_height();
 Vector2 video_size();
+
+// debug
+
+void video_draw_debug();
