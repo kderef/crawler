@@ -6,6 +6,7 @@
 
 #include "skybox.h"
 #include "player_camera.h"
+#include "menu.h"
 
 /******************************************************************************/
 // game
@@ -26,8 +27,10 @@ typedef struct {
 typedef struct {
     GameConfig config;
     bool running;
-    bool paused;
 
+    // UI
+    PauseMenu pause_menu;
+        
     // camera system
     PlayerCamera player_camera;
     Skybox skybox;

@@ -8,6 +8,7 @@ O_GAME = bin/game.o
 O_MAIN = bin/main.o
 O_SKBX = bin/skybox.o
 O_PLCM = bin/player_camera.o
+O_MENU = bin/menu.o
 
 ifdef OS
 	# Windows
@@ -23,8 +24,8 @@ endif
 
 FLAGS = $(CFLAGS) $(OSFLAGS)
 
-$(BIN): $(LIBRAYLIB) $(O_GAME) $(O_SKBX) $(O_PLCM)
-	$(CC) src/main.c $(O_GAME) $(O_SKBX) $(O_PLCM) $(LIBRAYLIB) -o $(BIN) $(FLAGS)
+$(BIN): $(LIBRAYLIB) $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU)
+	$(CC) src/main.c $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU) $(LIBRAYLIB) -o $(BIN) $(FLAGS)
 
 $(O_SKBX): src/skybox.*
 	$(CC) $(CFLAGS) -c src/skybox.c -o $(O_SKBX)
@@ -34,6 +35,9 @@ $(O_GAME): src/game.*
 
 $(O_PLCM): src/player_camera.*
 	$(CC) $(CFLAGS) -c src/player_camera.c -o $(O_PLCM)
+
+$(O_MENU): src/menu.*
+	$(CC) $(CFLAGS) -c src/menu.c -o $(O_MENU)
 	
 $(LIBRAYLIB): raylib/src/*.[ch]
 	make -C raylib/src

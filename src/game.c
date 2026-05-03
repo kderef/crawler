@@ -1,4 +1,5 @@
 #include "game.h"
+#include "src/menu.h"
 #include "src/player_camera.h"
 
 #include <time.h>
@@ -8,7 +9,7 @@ Game game_init(GameConfig conf) {
     Game g = {
         .config = conf,
         .running = true,
-        .paused = false,
+        .pause_menu = pause_menu_new(),
         .player_camera = player_camera_new(),
     };
 
@@ -56,7 +57,14 @@ void game_close(Game* g) {
 void game_update(Game* g) {
     if (WindowShouldClose()) g->running = false;
 
-    UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
+    bool paused = g->pause_menu.paused;
+
+    if (IsKeyPressed(KEY_ESCAPE)) {
+        paused = pause_menu_toggle(&g->pause_menu);
+        player_camera_set_grab(&g->player_camera, !paused);
+    }
+
+    if (!paused) UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
 }
 
 void game_draw(Game* g) {
@@ -78,6 +86,8 @@ void game_draw(Game* g) {
         );
     }
     EndMode3D();
+
+    pause_menu_draw(&g->pause_menu);
 
     DrawFPS(0, 0);
     EndDrawing();
