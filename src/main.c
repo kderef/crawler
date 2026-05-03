@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-#include "game/game.h"
+#include "game.h"
 
 int main(void) {
     const GameConfig conf = {
         .title = "Hello",
-        .width = 800,
-        .height = 600,
-        .target_fps = 120,
+        .width = 1280,
+        .height = 720,
+        .target_fps = 170,
         .resizable = true,
         .vsync = false,
         .msaa_4x = true,

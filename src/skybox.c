@@ -1,4 +1,4 @@
-#include "game.h"
+#include "skybox.h"
 
 #include "raylib.h"
 #include "rlgl.h"

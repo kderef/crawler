@@ -1,22 +1,15 @@
 #include "game.h"
-
-#include "skybox.c"
+#include "src/player_camera.h"
 
 #include <time.h>
 #include <raylib.h>
-#include <stdio.h>
 
 Game game_init(GameConfig conf) {
     Game g = {
         .config = conf,
         .running = true,
-        .camera = (Camera3D) {
-            .position = {1, 1, 1},
-            .target = {0, 0, 0},
-            .up = {0, 1, 0},
-            .fovy = 80.0,
-            .projection = CAMERA_PERSPECTIVE,
-        }
+        .paused = false,
+        .player_camera = player_camera_new(),
     };
 
     unsigned int flags = 0;
@@ -31,7 +24,7 @@ Game game_init(GameConfig conf) {
 }
 
 void game_open(Game* g) {
-    GameConfig* c = &g->config;
+    const GameConfig* c = &g->config;
         
     InitWindow(c->width, c->height, c->title);
     InitAudioDevice();
@@ -39,6 +32,9 @@ void game_open(Game* g) {
     SetExitKey(0);
     SetTargetFPS(c->target_fps);
     SetRandomSeed(time(0));
+
+    // grab cursor
+    player_camera_set_grab(&g->player_camera, true);
 }
 
 void game_load(Game* g) {
@@ -50,6 +46,8 @@ void game_load(Game* g) {
 
 void game_close(Game* g) {
     skybox_unload(&g->skybox);
+
+    player_camera_set_grab(&g->player_camera, false);
         
     CloseAudioDevice();
     CloseWindow();
@@ -58,14 +56,14 @@ void game_close(Game* g) {
 void game_update(Game* g) {
     if (WindowShouldClose()) g->running = false;
 
-    UpdateCamera(&g->camera, CAMERA_ORBITAL);
+    UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
 }
 
 void game_draw(Game* g) {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    BeginMode3D(g->camera);
+    BeginMode3D(g->player_camera.camera);
     {
         skybox_draw(&g->skybox);
         

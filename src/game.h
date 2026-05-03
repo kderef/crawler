@@ -4,10 +4,12 @@
 #include <raylib.h>
 #include <stdbool.h>
 
-typedef struct {
-    Mesh cube;
-    Model model;
-} Skybox;
+#include "skybox.h"
+#include "player_camera.h"
+
+/******************************************************************************/
+// game
+
 
 typedef struct {
     const char* title;
@@ -24,9 +26,10 @@ typedef struct {
 typedef struct {
     GameConfig config;
     bool running;
+    bool paused;
 
     // camera system
-    Camera3D camera;
+    PlayerCamera player_camera;
     Skybox skybox;
 
     Texture tex_test1;
