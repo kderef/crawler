@@ -20,8 +20,6 @@ typedef struct {
     bool vsync;
     bool resizable;
     bool msaa_4x;
-
-    float fovy;
 } GameConfig;
 
 typedef struct {

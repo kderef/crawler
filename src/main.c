@@ -11,8 +11,6 @@ int main(void) {
         .resizable = true,
         .vsync = false,
         .msaa_4x = true,
-
-        .fovy = 80.0,
     };
         
     Game g = game_init(conf);

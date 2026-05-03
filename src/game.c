@@ -64,7 +64,10 @@ void game_update(Game* g) {
         player_camera_set_grab(&g->player_camera, !paused);
     }
 
-    if (!paused) UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
+    if (!paused) {
+        // UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
+        player_camera_update(&g->player_camera);
+    }
 }
 
 void game_draw(Game* g) {
