@@ -1,8 +1,8 @@
 #include "game.h"
 
-#include "src/menu.h"
-#include "src/player_camera.h"
-#include "src/video.h"
+#include "menu.h"
+#include "player_camera.h"
+#include "video.h"
 
 #include <time.h>
 #include <raylib.h>
@@ -13,26 +13,20 @@ Game game_init(GameConfig conf) {
         .running = true,
         .pause_menu = pause_menu_new(),
         .player_camera = player_camera_new(),
-        .video = {0},
-        .audio = {0},
+        .video = video_new(conf.video_conf),
+        .audio = audio_new(),
     };
-
-    unsigned int flags = 0;
-
-    if (conf.resizable) flags |= FLAG_WINDOW_RESIZABLE;
-    if (conf.vsync) flags |= FLAG_VSYNC_HINT;
-    if (conf.msaa_4x) flags |= FLAG_MSAA_4X_HINT;
-
-    SetConfigFlags(flags);
     
     return g;
 }
 
 void game_open(Game* g) {
-    const GameConfig* c = &g->config;
+    // Video init
+    video_init(&g->video);
 
-    g->video = video_init(c->width, c->height, c->title);
-    g->audio = audio_init();
+    // Audio init
+    audio_init(&g->audio);
+
 
     SetRandomSeed(time(0));
 
@@ -64,6 +58,10 @@ void game_update(Game* g) {
     if (IsKeyPressed(KEY_ESCAPE)) {
         paused = pause_menu_toggle(&g->pause_menu);
         player_camera_set_grab(&g->player_camera, !paused);
+    }
+
+    if (IsKeyPressed(KEY_F11)) {
+        video_toggle_fullscreen(&g->video);
     }
 
     if (!paused) {

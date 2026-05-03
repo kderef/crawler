@@ -4,5 +4,7 @@ typedef struct {
     
 } Audio;
 
-Audio audio_init();
+Audio audio_new();
+
+void audio_init(Audio*);
 void audio_close(Audio*);

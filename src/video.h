@@ -4,15 +4,32 @@
 
 typedef struct {
     const char* title;
+    int target_fps;
     
-    int screen_w;
-    int screen_h;
+    int width;
+    int height;
 
     bool vsync;
     bool fullscreen;
+    bool msaa_4x;
+    bool resizable;
+} VideoConfig;
+
+typedef struct {
+    VideoConfig config;
+
+    bool fullscreen;
 } Video;
 
-Video video_init(int width, int height, const char* title);
+Video video_new(VideoConfig);
+
+void video_init(Video*);
 void video_close(Video*);
 
-void video_set_fps(Video*, int);
+int video_set_fps(Video*, int);
+bool video_toggle_fullscreen(Video*);
+bool video_set_fullscreen(Video*, bool);
+
+int video_width();
+int video_height();
+Vector2 video_size();

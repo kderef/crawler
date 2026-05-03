@@ -15,13 +15,7 @@
 
 
 typedef struct {
-    const char* title;
-    int width, height;
-    
-    int target_fps;
-    bool vsync;
-    bool resizable;
-    bool msaa_4x;
+    VideoConfig video_conf;
 } GameConfig;
 
 typedef struct {
