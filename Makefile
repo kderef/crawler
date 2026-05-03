@@ -11,6 +11,7 @@ O_PLCM = bin/player_camera.o
 O_MENU = bin/menu.o
 O_VDEO = bin/video.o
 O_AUDI = bin/audio.o
+O_ASST = bin/asset.o
 
 ifdef OS
 	# Windows
@@ -26,8 +27,8 @@ endif
 
 FLAGS = $(CFLAGS) $(OSFLAGS)
 
-$(BIN): $(LIBRAYLIB) $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU) $(O_VDEO) $(O_AUDI) src/main.c 
-	$(CC) src/main.c $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU) $(O_VDEO) $(O_AUDI) $(LIBRAYLIB) -o $(BIN) $(FLAGS)
+$(BIN): $(LIBRAYLIB) $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU) $(O_VDEO) $(O_AUDI) $(O_ASST) src/main.c 
+	$(CC) src/main.c $(O_GAME) $(O_SKBX) $(O_PLCM) $(O_MENU) $(O_VDEO) $(O_AUDI) $(O_ASST) $(LIBRAYLIB) -o $(BIN) $(FLAGS)
 
 $(O_SKBX): src/skybox.*
 	$(CC) $(CFLAGS) -c src/skybox.c -o $(O_SKBX)
@@ -44,8 +45,11 @@ $(O_MENU): src/menu.*
 $(O_VDEO): src/video.*
 	$(CC) $(CFLAGS) -c src/video.c -o $(O_VDEO)
 
-$(O_AUDI): src/video.*
+$(O_AUDI): src/audio.*
 	$(CC) $(CFLAGS) -c src/audio.c -o $(O_AUDI)
+
+$(O_ASST): src/asset.*
+	$(CC) $(CFLAGS) -c src/asset.c -o $(O_ASST)
 	
 $(LIBRAYLIB): raylib/src/*.[ch]
 	make -C raylib/src

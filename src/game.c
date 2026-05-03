@@ -2,6 +2,7 @@
 
 #include "menu.h"
 #include "player_camera.h"
+#include "asset.h"
 #include "video.h"
 
 #include <time.h>
@@ -11,6 +12,7 @@ Game game_init(GameConfig conf) {
     Game g = {
         .config = conf,
         .running = true,
+        .debug = false,
         .pause_menu = pause_menu_new(),
         .player_camera = player_camera_new(),
         .audio = audio_new(),
@@ -34,13 +36,14 @@ void game_open(Game* g) {
 }
 
 void game_load(Game* g) {
-    Image img_test1 = LoadImage("textures/skybox_test1.png");
-    g->tex_test1 = LoadTextureFromImage(img_test1);
-    g->skybox = skybox_generate(img_test1);
-    UnloadImage(img_test1);
+    Asset* sky1 = asset_load(AID_SKY1);
+    
+    g->skybox = skybox_generate(sky1->texture);
 }
 
 void game_close(Game* g) {
+    asset_unload_all();
+    
     skybox_unload(&g->skybox);
 
     player_camera_set_grab(&g->player_camera, false);
@@ -61,6 +64,9 @@ void game_update(Game* g) {
 
     if (IsKeyPressed(KEY_F11)) {
         video_toggle_fullscreen();
+    }
+    if (IsKeyPressed(KEY_F1)) {
+        g->debug = !g->debug;
     }
 
     if (!paused) {
@@ -92,7 +98,9 @@ void game_draw(Game* g) {
 
     pause_menu_draw(&g->pause_menu);
 
-    video_draw_debug();
+    if (g->debug)
+        video_draw_debug();
+
     EndDrawing();
 }
 

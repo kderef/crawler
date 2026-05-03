@@ -3,7 +3,7 @@
 #include "raylib.h"
 #include "rlgl.h"
 
-Skybox skybox_generate(Image img) {
+Skybox skybox_generate(Texture tex) {
     Skybox s;
 
     s.cube = GenMeshCube(1.0, 1.0, 1.0);
@@ -30,8 +30,11 @@ Skybox skybox_generate(Image img) {
 
     SetShaderValue(cubemap_shader, GetShaderLocation(cubemap_shader, "equirectangularMap"), (int[1]){ 0 }, SHADER_UNIFORM_INT);
 
+    Image img = LoadImageFromTexture(tex);
+
     // apply image
     s.model.materials[0].maps[MATERIAL_MAP_CUBEMAP].texture = LoadTextureCubemap(img, CUBEMAP_LAYOUT_AUTO_DETECT);
+    UnloadImage(img);
 
     return s;
 }

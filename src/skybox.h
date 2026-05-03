@@ -8,6 +8,6 @@ typedef struct {
 } Skybox;
 
 // Generate a skybox struct from a cubemap image
-Skybox skybox_generate(Image);
+Skybox skybox_generate(Texture2D);
 void skybox_unload(Skybox*);
 void skybox_draw(Skybox*);

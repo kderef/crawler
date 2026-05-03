@@ -21,6 +21,7 @@ typedef struct {
 typedef struct {
     GameConfig config;
     bool running;
+    bool debug;
 
     // systems
     Audio audio;
@@ -31,8 +32,6 @@ typedef struct {
     // camera system
     PlayerCamera player_camera;
     Skybox skybox;
-
-    Texture tex_test1;
 } Game;
 
 Game game_init(GameConfig);
