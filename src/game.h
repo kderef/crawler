@@ -7,6 +7,8 @@
 #include "skybox.h"
 #include "player_camera.h"
 #include "menu.h"
+#include "video.h"
+#include "audio.h"
 
 /******************************************************************************/
 // game
@@ -25,6 +27,10 @@ typedef struct {
 typedef struct {
     GameConfig config;
     bool running;
+
+    // systems
+    Video video;
+    Audio audio;
 
     // UI
     PauseMenu pause_menu;

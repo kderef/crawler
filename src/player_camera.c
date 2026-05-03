@@ -1,4 +1,5 @@
 #include "player_camera.h"
+#include "rcamera.h"
 
 #include <math.h>
 #include <raylib.h>
@@ -39,24 +40,39 @@ void player_camera_set_grab(PlayerCamera* pc, bool grab) {
     pc->mouse_grabbed = grab;
 }
 
-void player_camera_update(PlayerCamera* pc) {
+void player_camera_update(PlayerCamera* c) {
     const Vector2 m_delta = GetMouseDelta();    
 
-    const float sens = pc->sensitivity * 0.0001;
+    const float sens = c->sensitivity * 0.00005;
 
-    pc->yaw   -= m_delta.x * sens;
-    pc->pitch -= m_delta.y * sens;
+    c->yaw   -= m_delta.x * sens;
+    c->pitch -= m_delta.y * sens;
 
-    if (pc->pitch > 1.5) pc->pitch = 1.5;
-    if (pc->pitch < -1.5) pc->pitch = -1.5;
+    c->pitch = Clamp(c->pitch, -1.5, 1.5);
 
-    pc->pitch = Clamp(pc->pitch, -1.5, 1.5);
-
-    const Vector3 forward = {
-        cosf(pc->pitch) * sinf(pc->yaw),
-        sinf(pc->pitch),
-        cosf(pc->pitch) * cosf(pc->yaw)
+    // forward
+    const Vector3 forward = (Vector3) {
+        cosf(c->pitch) * sinf(c->yaw),
+        sinf(c->pitch),
+        cosf(c->pitch) * cosf(c->yaw)
     };
 
-    pc->target = Vector3Add(pc->position, forward);
+    // set target (mouse target)
+    c->target = Vector3Add(c->position, forward);
+}
+
+
+void player_camera_freemove(PlayerCamera* c) {
+    float dt = GetFrameTime();
+    const float MOVE_SPEED = 5.0;
+
+    bool move_in_world_plane = false;
+      
+    // WASD
+    float distance = MOVE_SPEED * dt;
+    
+    if (IsKeyDown(KEY_W)) CameraMoveForward(&c->camera, distance, move_in_world_plane);
+    if (IsKeyDown(KEY_S)) CameraMoveForward(&c->camera, -distance, move_in_world_plane);
+    if (IsKeyDown(KEY_D)) CameraMoveRight(&c->camera, distance, move_in_world_plane);
+    if (IsKeyDown(KEY_A)) CameraMoveRight(&c->camera, -distance, move_in_world_plane);
 }

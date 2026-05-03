@@ -23,8 +23,13 @@ typedef struct {
     bool mouse_grabbed;
 } PlayerCamera;
 
+/**********************************************************************/
+
 PlayerCamera player_camera_new();
 void player_camera_set_grab(PlayerCamera*, bool);
 
 // Update the camera's target to mouse movement
 void player_camera_update(PlayerCamera*);
+
+// Free movement mode, for debug
+void player_camera_freemove(PlayerCamera*);

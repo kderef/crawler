@@ -1,6 +1,8 @@
 #include "game.h"
+
 #include "src/menu.h"
 #include "src/player_camera.h"
+#include "src/video.h"
 
 #include <time.h>
 #include <raylib.h>
@@ -11,6 +13,8 @@ Game game_init(GameConfig conf) {
         .running = true,
         .pause_menu = pause_menu_new(),
         .player_camera = player_camera_new(),
+        .video = {0},
+        .audio = {0},
     };
 
     unsigned int flags = 0;
@@ -26,12 +30,10 @@ Game game_init(GameConfig conf) {
 
 void game_open(Game* g) {
     const GameConfig* c = &g->config;
-        
-    InitWindow(c->width, c->height, c->title);
-    InitAudioDevice();
 
-    SetExitKey(0);
-    SetTargetFPS(c->target_fps);
+    g->video = video_init(c->width, c->height, c->title);
+    g->audio = audio_init();
+
     SetRandomSeed(time(0));
 
     // grab cursor
@@ -50,8 +52,8 @@ void game_close(Game* g) {
 
     player_camera_set_grab(&g->player_camera, false);
         
-    CloseAudioDevice();
-    CloseWindow();
+    audio_close(&g->audio);
+    video_close(&g->video);
 }
 
 void game_update(Game* g) {
@@ -67,6 +69,7 @@ void game_update(Game* g) {
     if (!paused) {
         // UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
         player_camera_update(&g->player_camera);
+        player_camera_freemove(&g->player_camera);
     }
 }
 
