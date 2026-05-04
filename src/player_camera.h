@@ -13,7 +13,7 @@ typedef struct {
             float fovy;             
             int projection;         
         };
-        Camera3D camera;
+        Camera3D rcamera;
     };
 
     float yaw;
@@ -30,6 +30,3 @@ void player_camera_set_grab(PlayerCamera*, bool);
 
 // Update the camera's target to mouse movement
 void player_camera_update(PlayerCamera*);
-
-// Free movement mode, for debug
-void player_camera_freemove(PlayerCamera*);

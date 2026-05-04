@@ -14,7 +14,7 @@ Game game_init(GameConfig conf) {
         .running = true,
         .debug = false,
         .pause_menu = pause_menu_new(),
-        .player_camera = player_camera_new(),
+        .player = player_new(),
         .audio = audio_new(),
     };
     
@@ -32,7 +32,7 @@ void game_open(Game* g) {
     SetRandomSeed(time(0));
 
     // grab cursor
-    player_camera_set_grab(&g->player_camera, true);
+    player_camera_set_grab(&g->player.camera, true);
 }
 
 void game_load(Game* g) {
@@ -46,7 +46,7 @@ void game_close(Game* g) {
     
     skybox_unload(&g->skybox);
 
-    player_camera_set_grab(&g->player_camera, false);
+    player_camera_set_grab(&g->player.camera, false);
         
     audio_close(&g->audio);
     video_close();
@@ -59,7 +59,7 @@ void game_update(Game* g) {
 
     if (IsKeyPressed(KEY_ESCAPE)) {
         paused = pause_menu_toggle(&g->pause_menu);
-        player_camera_set_grab(&g->player_camera, !paused);
+        player_camera_set_grab(&g->player.camera, !paused);
     }
 
     if (IsKeyPressed(KEY_F11)) {
@@ -71,8 +71,8 @@ void game_update(Game* g) {
 
     if (!paused) {
         // UpdateCamera(&g->player_camera.camera, CAMERA_FIRST_PERSON);
-        player_camera_update(&g->player_camera);
-        player_camera_freemove(&g->player_camera);
+        player_update_camera(&g->player);
+        player_update_movement(&g->player, g->debug);
     }
 }
 
@@ -80,7 +80,7 @@ void game_draw(Game* g) {
     BeginDrawing();
     ClearBackground(BLACK);
 
-    BeginMode3D(g->player_camera.camera);
+    BeginMode3D(g->player.camera.rcamera);
     {
         skybox_draw(&g->skybox);
         

@@ -5,8 +5,8 @@
 #include <stdbool.h>
 
 #include "skybox.h"
-#include "player_camera.h"
 #include "menu.h"
+#include "player.h"
 #include "video.h"
 #include "audio.h"
 
@@ -30,7 +30,7 @@ typedef struct {
     PauseMenu pause_menu;
         
     // camera system
-    PlayerCamera player_camera;
+    Player player;
     Skybox skybox;
 } Game;
 

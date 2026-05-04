@@ -60,19 +60,3 @@ void player_camera_update(PlayerCamera* c) {
     // set target (mouse target)
     c->target = Vector3Add(c->position, forward);
 }
-
-
-void player_camera_freemove(PlayerCamera* c) {
-    float dt = GetFrameTime();
-    const float MOVE_SPEED = 5.0;
-
-    bool move_in_world_plane = false;
-      
-    // WASD
-    float distance = MOVE_SPEED * dt;
-    
-    if (IsKeyDown(KEY_W)) CameraMoveForward(&c->camera, distance, move_in_world_plane);
-    if (IsKeyDown(KEY_S)) CameraMoveForward(&c->camera, -distance, move_in_world_plane);
-    if (IsKeyDown(KEY_D)) CameraMoveRight(&c->camera, distance, move_in_world_plane);
-    if (IsKeyDown(KEY_A)) CameraMoveRight(&c->camera, -distance, move_in_world_plane);
-}

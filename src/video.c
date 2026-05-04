@@ -94,7 +94,7 @@ Vector2 video_size() {
 
 void video_draw_debug() {
     const Color COLOR = YELLOW;
-    int font_size = 30;
+    const int font_size = 30;
     int x = 5;
     int y = -font_size + 5;
 
